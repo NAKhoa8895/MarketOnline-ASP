@@ -1,0 +1,223 @@
+﻿@Styles.Render("~/Content/Details.css")
+@model MarketOnline.Models.Items
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- #region Jssor Slider Begin -->
+@Scripts.Render("~/Scripts/jssor.slider-23.1.6.min.js")
+<script type="text/javascript">
+    jssor_1_slider_init = function () {
+        var jssor_1_SlideshowTransitions = [
+          { $Duration: 1200, $Zoom: 1, $Easing: { $Zoom: $Jease$.$InCubic, $Opacity: $Jease$.$OutQuad }, $Opacity: 2 },
+          { $Duration: 1000, $Zoom: 11, $SlideOut: true, $Easing: { $Zoom: $Jease$.$InExpo, $Opacity: $Jease$.$Linear }, $Opacity: 2 },
+          { $Duration: 1200, $Zoom: 1, $Rotate: 1, $During: { $Zoom: [0.2, 0.8], $Rotate: [0.2, 0.8] }, $Easing: { $Zoom: $Jease$.$Swing, $Opacity: $Jease$.$Linear, $Rotate: $Jease$.$Swing }, $Opacity: 2, $Round: { $Rotate: 0.5 } },
+          { $Duration: 1000, $Zoom: 11, $Rotate: 1, $SlideOut: true, $Easing: { $Zoom: $Jease$.$InExpo, $Opacity: $Jease$.$Linear, $Rotate: $Jease$.$InExpo }, $Opacity: 2, $Round: { $Rotate: 0.8 } },
+          { $Duration: 1200, x: 0.5, $Cols: 2, $Zoom: 1, $Assembly: 2049, $ChessMode: { $Column: 15 }, $Easing: { $Left: $Jease$.$InCubic, $Zoom: $Jease$.$InCubic, $Opacity: $Jease$.$Linear }, $Opacity: 2 },
+          { $Duration: 1200, x: 4, $Cols: 2, $Zoom: 11, $SlideOut: true, $Assembly: 2049, $ChessMode: { $Column: 15 }, $Easing: { $Left: $Jease$.$InExpo, $Zoom: $Jease$.$InExpo, $Opacity: $Jease$.$Linear }, $Opacity: 2 },
+          { $Duration: 1200, x: 0.6, $Zoom: 1, $Rotate: 1, $During: { $Left: [0.2, 0.8], $Zoom: [0.2, 0.8], $Rotate: [0.2, 0.8] }, $Easing: { $Left: $Jease$.$Swing, $Zoom: $Jease$.$Swing, $Opacity: $Jease$.$Linear, $Rotate: $Jease$.$Swing }, $Opacity: 2, $Round: { $Rotate: 0.5 } },
+          { $Duration: 1000, x: -4, $Zoom: 11, $Rotate: 1, $SlideOut: true, $Easing: { $Left: $Jease$.$InExpo, $Zoom: $Jease$.$InExpo, $Opacity: $Jease$.$Linear, $Rotate: $Jease$.$InExpo }, $Opacity: 2, $Round: { $Rotate: 0.8 } },
+          { $Duration: 1200, x: -0.6, $Zoom: 1, $Rotate: 1, $During: { $Left: [0.2, 0.8], $Zoom: [0.2, 0.8], $Rotate: [0.2, 0.8] }, $Easing: { $Left: $Jease$.$Swing, $Zoom: $Jease$.$Swing, $Opacity: $Jease$.$Linear, $Rotate: $Jease$.$Swing }, $Opacity: 2, $Round: { $Rotate: 0.5 } },
+          { $Duration: 1000, x: 4, $Zoom: 11, $Rotate: 1, $SlideOut: true, $Easing: { $Left: $Jease$.$InExpo, $Zoom: $Jease$.$InExpo, $Opacity: $Jease$.$Linear, $Rotate: $Jease$.$InExpo }, $Opacity: 2, $Round: { $Rotate: 0.8 } },
+          { $Duration: 1200, x: 0.5, y: 0.3, $Cols: 2, $Zoom: 1, $Rotate: 1, $Assembly: 2049, $ChessMode: { $Column: 15 }, $Easing: { $Left: $Jease$.$InCubic, $Top: $Jease$.$InCubic, $Zoom: $Jease$.$InCubic, $Opacity: $Jease$.$OutQuad, $Rotate: $Jease$.$InCubic }, $Opacity: 2, $Round: { $Rotate: 0.7 } },
+          { $Duration: 1000, x: 0.5, y: 0.3, $Cols: 2, $Zoom: 1, $Rotate: 1, $SlideOut: true, $Assembly: 2049, $ChessMode: { $Column: 15 }, $Easing: { $Left: $Jease$.$InExpo, $Top: $Jease$.$InExpo, $Zoom: $Jease$.$InExpo, $Opacity: $Jease$.$Linear, $Rotate: $Jease$.$InExpo }, $Opacity: 2, $Round: { $Rotate: 0.7 } },
+          { $Duration: 1200, x: -4, y: 2, $Rows: 2, $Zoom: 11, $Rotate: 1, $Assembly: 2049, $ChessMode: { $Row: 28 }, $Easing: { $Left: $Jease$.$InCubic, $Top: $Jease$.$InCubic, $Zoom: $Jease$.$InCubic, $Opacity: $Jease$.$OutQuad, $Rotate: $Jease$.$InCubic }, $Opacity: 2, $Round: { $Rotate: 0.7 } },
+          { $Duration: 1200, x: 1, y: 2, $Cols: 2, $Zoom: 11, $Rotate: 1, $Assembly: 2049, $ChessMode: { $Column: 19 }, $Easing: { $Left: $Jease$.$InCubic, $Top: $Jease$.$InCubic, $Zoom: $Jease$.$InCubic, $Opacity: $Jease$.$OutQuad, $Rotate: $Jease$.$InCubic }, $Opacity: 2, $Round: { $Rotate: 0.8 } }
+        ];
+
+        var jssor_1_options = {
+            $AutoPlay: 0,
+            $FillMode: 3,
+            $SlideshowOptions: {
+                $Class: $JssorSlideshowRunner$,
+                $Transitions: jssor_1_SlideshowTransitions,
+                $TransitionsOrder: 1
+            },
+            $ArrowNavigatorOptions: {
+                $Class: $JssorArrowNavigator$
+            },
+            $ThumbnailNavigatorOptions: {
+                $Class: $JssorThumbnailNavigator$,
+                $Rows: 1,
+                $Cols: 6,
+                $SpacingX: 1,
+                $SpacingY: 6,
+                $Orientation: 2,
+                $Align: 156
+            }
+
+        };
+
+        var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
+
+        /*responsive code begin*/
+        /*remove responsive code if you don't want the slider scales while window resizing*/
+        function ScaleSlider() {
+            var refSize = jssor_1_slider.$Elmt.parentNode.clientWidth;
+            if (refSize) {
+                refSize = Math.min(refSize, 960);
+                refSize = Math.max(refSize, 300);
+                jssor_1_slider.$ScaleWidth(refSize);
+            }
+            else {
+                window.setTimeout(ScaleSlider, 30);
+            }
+        }
+        ScaleSlider();
+        $Jssor$.$AddEvent(window, "load", ScaleSlider);
+        $Jssor$.$AddEvent(window, "resize", ScaleSlider);
+        $Jssor$.$AddEvent(window, "orientationchange", ScaleSlider);
+        /*responsive code end*/
+    };
+</script>
+<style>
+
+</style>
+<div style="padding-left:3%;width:87%">
+    <div class="main">
+        <div class="row">
+            <div class="col-lg-8 ">
+                <div style="margin-left:20px;margin-top:15px;">
+                    <div id="jssor_1" style="position:relative;margin:0 auto;top:0px;left:0px;width:960px;height:480px;overflow:hidden;visibility:hidden;background-color:#24262e;">
+                        <!-- Loading Screen -->
+                        <div data-u="loading" style="position:absolute;top:0px;left:0px;background:url('../../img/slider/loading.gif') no-repeat 50% 50%;background-color:rgba(0, 0, 0, 0.7);"></div>
+                        <div data-u="slides" style="cursor:default;position:relative;top:0px;left:240px;width:720px;height:480px;overflow:hidden;">
+                          
+                            <div>
+                                <img data-u="image" src="https://static.chotot.com.vn/wm_images/06/0678951843.jpg" style="object-fit: cover;" />
+                                <img data-u="thumb" src="https://static.chotot.com.vn/wm_images/06/0678951843.jpg" style="object-fit:cover;" />
+                            </div>
+                            <div>
+                                <img data-u="image" src="https://static.chotot.com.vn/wm_images/03/0319741595.jpg" style="object-fit: cover;" />
+                                <img data-u="thumb" src="https://static.chotot.com.vn/wm_images/03/0319741595.jpg" style="object-fit: cover;" />
+                            </div>
+                            <div>
+                                <img data-u="image" src="../../img/slider/03.jpg" />
+                                <img data-u="thumb" src="../../img/slider/thumb-03.jpg" />
+                            </div>
+                            <div>
+                                <img data-u="image" src="../../img/slider/04.jpg" />
+                                <img data-u="thumb" src="../../img/slider/thumb-04.jpg" />
+                            </div>
+                            <div>
+                                <img data-u="image" src="../../img/slider/05.jpg" />
+                                <img data-u="thumb" src="../../img/slider/thumb-05.jpg" />
+                            </div>
+                            <div>
+                                <img data-u="image" src="../../img/slider/06.jpg" />
+                                <img data-u="thumb" src="../../img/slider/thumb-06.jpg" />
+                            </div>
+
+
+                            <a data-u="any" href="https://www.jssor.com" style="display:none">slider bootstrap</a>
+                        </div>
+                        <!-- Thumbnail Navigator -->
+                        <div data-u="thumbnavigator" class="jssort01-99-66" style="position:absolute;left:0px;top:0px;width:240px;height:480px;" data-autocenter="2">
+                            <!-- Thumbnail Item Skin Begin -->
+                            <div data-u="slides" style="cursor: default;">
+                                <div data-u="prototype" class="p">
+                                    <div class="w">
+                                        <div data-u="thumbnailtemplate" class="t"></div>
+                                    </div>
+                                    <div class="c"></div>
+                                </div>
+                            </div>
+                            <!-- Thumbnail Item Skin End -->
+                        </div>
+                        <!-- Arrow Navigator -->
+                        <span data-u="arrowleft" class="jssora05l" style="top:0px;left:248px;width:40px;height:40px;" data-autocenter="2"></span>
+                        <span data-u="arrowright" class="jssora05r" style="top:0px;right:8px;width:40px;height:40px;" data-autocenter="2"></span>
+                    </div>
+                    <script type="text/javascript">jssor_1_slider_init();</script>
+                    <!-- #endregion Jssor Slider End -->
+                    <h1 class="details-name">@Html.DisplayFor(Model => Model.Name)</h1>
+                    @{
+                        string price = ((double)Model.Price).ToString("C0");
+                    }
+                    <span class="details-price">
+                        @price
+                    </span>
+                    <p class="details-desc">
+                        @Html.DisplayFor(Model => Model.Description)
+                    </p>
+                    <strong style="color:#8f8297;font-size:14px;">Địa chỉ mua hàng</strong>
+                    <p class="details-desc" style="padding-top:15px;"><span class="glyphicon glyphicon-map-marker"></span> @Html.DisplayFor(Model => Model.Adress)  </p>
+                </div>
+            </div>
+            <div class="col-lg-4" style="padding-left:0px;padding-right:0px;">
+                <div style="margin-top:15px;">
+                    <hr width="90%" style="margin-top:0px;">
+                    <div class="row" style="margin-right:-30px;">
+                        <div class="col-sm-2 " style="padding-left:0px;padding-right:0px">
+                            <img class="avatar" src="~/img/test-avatar.png" />
+                        </div>
+                        <div class="col-sm-9">
+                            <strong class="details-username">
+                                @Html.DisplayFor(Model => Model.AspNetUsers.Name)
+                            </strong>
+                            <div class="row" style="padding-top:5px;">
+                                <span class="glyphicon glyphicon-map-marker col-sm-1 icon" style="padding-right:0px;padding-left:0px;"></span>
+                                <p class="col-sm-11 content" style="padding-left:5px;">@Html.DisplayFor(model => model.AspNetUsers.Adress) P.Phú Thọ Hòa, Q.Tân Phú, HCM</p>
+                            </div>
+                            <p class="content" style="margin-top:-5px;"><span class="glyphicon glyphicon-calendar"></span> tham gia: 05-05-2017</p>
+
+                        </div>
+                    </div>
+                    <hr width="90%" style="margin-top:10px;margin-bottom:10px">
+                    <div style="padding-left:5%;height:50px">
+                        @{
+                            System.Web.HttpBrowserCapabilitiesBase myBrowserCaps = Request.Browser;
+                            if (myBrowserCaps.IsMobileDevice)
+                            {
+                                var phone = Model.AspNetUsers.PhoneNumber;
+                                <button href="@string.Format("tel:{0}", phone)" type="button" class="btn btn-success  btncustom" style="width:90%;height:44px;">
+                                    <p style="margin:auto">
+                                        <span class="glyphicon glyphicon-phone"></span>
+                                        <span style="font-weight: 700!important;font-size: 13px;font-family: Verdana,Arial,sans-serif;">Nhấn để gọi</span>
+                                    </p>
+                                </button>
+                            }
+                            else
+                            {
+                                <div id="hide" type="button" class="btn btn-success  btncustom" style="width:97%;height:44px;">
+                                    <p style="margin:auto">
+                                        <span class="glyphicon glyphicon-phone" style="font-size:25px;"></span>
+                                        
+                                            <span class="text-button-details "style="vertical-align:super">
+                                                Nhấn để hiện số
+                                            </span>
+                                    </p>
+                                </div>
+                                <h4>
+                                    <strong id="phone" style="font-weight:700"> @Html.DisplayFor(model => model.AspNetUsers.PhoneNumber)</strong>
+                                </h4>
+                            }
+                        }
+                    </div>
+                    <div class="warning-details">
+                        <h5>
+                            <strong>Mua hàng an toàn</strong>
+                        </h5>
+                        <ul class="warning-content">
+                            <li>KHÔNG trả tiền trước khi nhận hàng.</li>
+                            <li>Kiểm tra hàng cẩn thận, đặc biệt với hàng đắt tiền.</li>
+                            <li>Hẹn gặp ở nơi công cộng.</li>
+                            <li>Nếu bạn mua hàng hiệu, hãy gặp mặt tại cửa hàng để nhờ xác minh, tránh mua phải hàng giả</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $("#phone").hide();
+        $("#hide").click(function () {
+            $("#phone").show();
+            $("#hide").hide();
+        });
+    });
+</script>

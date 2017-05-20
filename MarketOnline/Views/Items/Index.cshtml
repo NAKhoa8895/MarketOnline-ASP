@@ -1,0 +1,112 @@
+﻿@Styles.Render("~/Content/Items.css")
+@model PagedList.IPagedList<MarketOnline.Models.Items>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList listgroup = ViewBag.Group;
+    SelectList listcity = ViewBag.City;
+    var selectList = new SelectList(
+        new List<SelectListItem>
+        {
+            new SelectListItem {Text = "Tin mới trước", Value = "dateFirst"},
+            new SelectListItem {Text = "Giá thấp trước", Value = "priceFirst"},
+        }, "Value", "Text");
+
+}
+
+
+<div style="padding-left:5%;width:75%">
+    <div class="main">
+        @{
+            string group = "";
+            string city = "";
+            if (string.IsNullOrEmpty(ViewBag.currentGroup))
+            {
+                group = "Rao vặt";
+            }
+            else
+            {
+                group = listgroup.Where(p => p.Value == ViewBag.currentGroup).First().Text;
+            }
+            if (string.IsNullOrEmpty(ViewBag.currentCity))
+            {
+                city = "Trên Toàn quốc";
+            }
+            else
+            {
+                city = "Ở" + listgroup.Where(p => p.Value == ViewBag.currentCity).First().Text;
+            }
+        }
+        <div class="filter">
+            <h3>
+                Mua bán @group @city
+            </h3>
+            @using (Html.BeginForm("Index", "Items", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-lg-12" style="width:75%;">
+                        @Html.TextBox("searchString", null, new { @class = "form-control", placeholder = "Nhập từ khóa cần tìm kiếm vào đây" })
+                    </div>
+                    <input type="submit" value="Find" style="margin-left:-14px" />
+                </div>
+                <div class="row">
+                    <div class="col-sm-5 filterpad" style="width:35%;padding-left:15px;">
+                        @Html.DropDownList("Group", listgroup, "All", new { @class = "form-control", onchange = "this.form.submit();" })
+                    </div>
+                    <div class="col-sm-5 filterpad" style="width:35%">
+                        @Html.DropDownList("City", listcity, "All", new { @class = "form-control", onchange = "this.form.submit();" })
+                    </div>
+                    <div class="col-sm-2 filterpad" style="width:10%">
+                        @Html.DropDownList("sortOrder", selectList, "Lọc", new { @class = "form-control", @onchange = "this.form.submit();" })
+                    </div>
+
+                </div>
+            }
+        </div>
+        <div class="containitem">
+            @foreach (var item in Model)
+            {
+
+                <div class="row item1">
+                    <a href="@Url.Action("Details", "Items",new { id=item.Id})" class="" style="text-decoration:none">
+                        <div class="col-sm-3">
+                            <img src="https://fscl01.fonpit.de/userfiles/6626797/image/ram-1-w628.jpg" class="imgitems" />
+                        </div>
+                    </a>
+                    <div class="col-sm-7" style="padding-left:0px">
+                        <a href="@Url.Action("Details", "Items",new { id=item.Id})" class="" style="text-decoration:none">
+                            <div>
+                                <p class="title">
+                                    @Html.DisplayFor(model => item.Name)
+                                </p>
+                                @{
+                                    string price = ((double)item.Price).ToString("C0");
+                                }
+                                <p class="price">
+                                    @price
+                                </p>
+                            </div>
+                        </a>
+                        <div class="bottom_item">
+                            <p class="time_place">
+                                Hôm nay 14:00 | @Html.DisplayFor(model => item.Adress)
+                            </p>
+                            <a>
+                                <div class="item_user">
+                                    @Html.DisplayFor(model => item.AspNetUsers.Name)
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                                    }
+        </div>
+
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, currentGroup = ViewBag.currentGroup, currentCity = ViewBag.currentCity , searchString=ViewBag.currentstring }))
+    </div>
+</div>

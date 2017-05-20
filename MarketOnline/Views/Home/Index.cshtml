@@ -1,0 +1,237 @@
+﻿@model IEnumerable<MarketOnline.Models.City>
+@{
+    ViewBag.Title = "Home Page";
+    SelectList list = ViewBag.city;
+}
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/Layout.css")
+    @Styles.Render("~/Content/jquery.fullPage.css")
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+    @Scripts.Render("~/Scripts/vendors/scrolloverflow.js")
+    @Scripts.Render("~/Scripts/vendors/jquery.easings.min.js")
+    @Scripts.Render("~/Scripts/jquery.fullPage.js")
+    <script type="text/javascript" src="../Scripts/jquery.fullPage.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#fullpage').fullpage({
+                onLeave: function (index, nextIndex, direction) {
+                    var leavingSection = $(this);
+
+                    //after leaving section 2
+                    if (index == 1 && direction == 'down') {
+                        $("#nav").addClass("navbar-inverse");
+                    }
+
+                    else if (index == 2 && direction == 'up') {
+                        $("#nav").removeClass("navbar-inverse");
+                    }
+                }
+            });
+        });
+
+
+    </script>
+</head>
+<body>
+    <div>
+        <div id="nav" class="navbar .navbar-inverse navbar-fixed-top test">
+            <div class="container">
+                <div class="navbar-header">
+
+                    <a href="@Url.Action( "Index", "Home")" class="navbar-brand" style="padding-left:15px;padding-top:10px;">
+                        <img src="~/img/logo4.png" style="width:100px;height:30px;display: block;margin: 0 auto;object-fit:fill;" />
+                    </a>
+                    <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <div class="navbar-collapse collapse">
+
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="fullpage">
+        <div class="section active">
+            <section class="first">
+                <div class="layer">
+                    <div class="container">
+                        @using (Html.BeginForm("Index", "Items", FormMethod.Post))
+                        {
+                            <div style="padding-top:20%;padding-left:35%;opacity:0.8">
+                                @Html.DropDownList("City", list, "All", new { @class = "form-control"  })
+
+                                <input class="btn-success" type="submit" value="Find" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="section" style="padding-left:230px;">
+            <section id="services" style="margin-top:-135px">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-7 group">
+                            <div class="thumbnail">
+                                <a href="@Url.Action("Index", "Items",new { group="1"})">
+                                    <div class="hover">
+                                        <img src="~/img/index/batdongsan.jpg" class="img" style="width:100% ;" />
+                                    </div>
+                                    <div class="caption post-content">
+                                        <h4>Bất động sản!</h4>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 group">
+                            <div class="thumbnail">
+                                <a href="@Url.Action("Index", "Items",new { group="2"})">
+                                    <div class="hover">
+                                        <img src="~/img/index/Dodientu.jpg" class="img" style="width:100%;" />
+                                    </div>
+                                    <div class="caption post-content">
+                                        <h4>Đồ điện tử</h4>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 group" style="width:460px">
+                            <div class="thumbnail">
+                                <a href="@Url.Action("Index", "Items",new { group="3"})">
+                                    <div class="hover">
+                                        <img src="~/img/index/xe.jpg" class="img" style="width:100%;" />
+                                    </div>
+                                    <div class="caption post-content">
+                                        <h4>Xe cộ</h4>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 group">
+                            <div class="thumbnail">
+                                <a href="@Url.Action("Index", "Items",new { group="4"})">
+                                    <div class="hover">
+                                        <img src="~/img/index/thoitrang.jpg" class="img" style="width:100%; " />
+                                    </div>
+                                    <div class="caption post-content">
+                                        <h4>Thời trang</h4>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 group">
+                            <div class="thumbnail">
+                                <a href="@Url.Action("Index", "Items",new { group="5"})">
+                                    <div class="hover">
+                                        <img src="~/img/index/noithat.jpg" class="img" style="width:100%;" />
+                                    </div>
+                                    <div class="caption post-content">
+                                        <h4>Nội thất gia dụng</h4>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 group">
+                            <div class="thumbnail">
+                                <a href="@Url.Action("Index", "Items",new { group="6"})">
+                                    <div class="hover">
+                                        <img src="~/img/index/giaitri.jpg" class="img" style="width:100%;" />
+                                    </div>
+                                    <div class="caption post-content">
+                                        <h4>Giải trí,thể thao</h4>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 group">
+                            <div class="thumbnail">
+                                <a href="@Url.Action("Index", "Items",new { group="7"})">
+                                    <div class="hover">
+                                        <img src="~/img/index/DoVanPhong.jpg" class="img" style="width:100%;" />
+                                    </div>
+                                    <div class="caption post-content">
+                                        <h4>Đồ điện tử</h4>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 group">
+                            <div class="thumbnail">
+                                <a href="@Url.Action("Index", "Items",new { group="8"})">
+                                    <div class="hover">
+                                        <img src="~/img/index/vieclam.jpg" class="img" style="width:100%;" />
+                                    </div>
+                                    <div class="caption post-content">
+                                        <h4>Việc làm dịch vụ</h4>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 group">
+                            <div class="thumbnail">
+                                <a href="@Url.Action("Index", "Items",new { group="9"})">
+                                    <div class="hover">
+                                        <img src="~/img/index/all.jpg" class="img" style="width:100%;" />
+                                    </div>
+                                    <div class="caption post-content">
+                                        <h4>All</h4>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+        </div>
+        <div class="section">
+            <section id="services">
+
+                <div class="container">
+
+                    <h1>Services.. here is some more content</h1>
+
+                </div>
+
+            </section>
+        </div>
+    </div>
+
+
+    @*  @Scripts.Render("~/bundles/jquery")*@
+
+    @Scripts.Render("~/bundles/bootstrap")
+
+
+    <script type="text/javascript">
+
+
+
+    </script>
+
+</body>
+</html>
