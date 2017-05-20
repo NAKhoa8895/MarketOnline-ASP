@@ -20,9 +20,11 @@ namespace MarketOnline.Controllers
         public ActionResult Index(string currentGroup, string currentCity, string group, string city, string searchString, string currentstring, string sortOrder, int? page)
         {
 
-
+            //get group to display in dropdownlist
             ViewBag.Group = new SelectList(db.Group.ToList(), "Id", "Name");
+            //get City to display in dropdownlist
             ViewBag.City = new SelectList(db.City.ToList(), "Id", "Name");
+            //save current group when pagin
             if (group != null)
             {
                 page = 1;
@@ -31,6 +33,7 @@ namespace MarketOnline.Controllers
             {
                 group = currentGroup;
             }
+            //save current city when pagin
             ViewBag.currentGroup = group;
             if (city != null)
             {
@@ -41,7 +44,7 @@ namespace MarketOnline.Controllers
                 city = currentCity;
             }
             ViewBag.currentCity = city;
-
+            //save current searchkey when pagin
             if (searchString != null)
             {
                 page = 1;
@@ -51,31 +54,33 @@ namespace MarketOnline.Controllers
                 searchString = currentstring;
             }
             ViewBag.CurrentFilter = searchString;
-
+            //get all items
             var items = db.Items.Include(i => i.AspNetUsers).Include(i => i.City).Include(i => i.Group);
-
+            //Filter by searchkey
             if (!String.IsNullOrEmpty(searchString))
             {
                 items = items.Where(s => s.Name.Contains(searchString) || s.Name.Contains(searchString));
 
             }
+            //Filter by group
             if (!string.IsNullOrEmpty(group))
             {
                 int getGroup = int.Parse(group);
                 items = items.Where(s => s.Group.Id == getGroup);
 
             }
+            //Filter by City
             if (!string.IsNullOrEmpty(city))
             {
                 int getCity = int.Parse(city);
                 items = items.Where(s => s.City.Id == getCity);
             }
+            //Sort by sortOrder
             if (string.IsNullOrEmpty(sortOrder))
             {
                 items = items.OrderBy(s => s.Id);
             }
             else
-
             if (sortOrder.CompareTo("dateFirst") == 0)
             {
                 items = items.OrderBy(s => s.Id);
@@ -85,8 +90,8 @@ namespace MarketOnline.Controllers
                 items = items.OrderBy(s => s.Price);
             }
 
-            int pageSize = 3;
-            int pageNumber = (page ?? 1);
+            int pageSize = 3; //items per page
+            int pageNumber = (page ?? 1); //current page
             return View(items.ToPagedList(pageNumber, pageSize));
         }
 
@@ -140,18 +145,19 @@ namespace MarketOnline.Controllers
         // GET: Items/Edit/5
         public ActionResult Edit(int? id)
         {
-
+            //Check id is null
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             Items items = db.Items.Find(id);
-           
+            //check is exist items
             if (items == null)
             {
                 return HttpNotFound();
             }
+            //check is user have permission to edit
             if (User.Identity.GetUserId().CompareTo(items.AspNetUsers.Id) != 0)
             {
                 return PartialView("~/Views/Shared/WrongIdEditor.cshtml");
@@ -171,6 +177,14 @@ namespace MarketOnline.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Description,Price,Adress,PhoneContact,image,IDUser,IDGroup,IDCity")] Items items)
         {
+            if (items == null)
+            {
+                return HttpNotFound();
+            }
+            if (User.Identity.GetUserId().CompareTo(items.AspNetUsers.Id) != 0)
+            {
+                return PartialView("~/Views/Shared/WrongIdEditor.cshtml");
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(items).State = EntityState.Modified;
