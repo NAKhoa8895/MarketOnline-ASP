@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using MarketOnline.Models;
 using PagedList;
 using Microsoft.AspNet.Identity;
+using System.Data.Entity.Validation;
 
 namespace MarketOnline.Controllers
 {
@@ -115,9 +116,8 @@ namespace MarketOnline.Controllers
         public ActionResult Create()
         {
 
-            ViewBag.IDUser = new SelectList(db.AspNetUsers, "Id", "Email");
-            ViewBag.IDCity = new SelectList(db.City, "Id", "Name");
-            ViewBag.IDGroup = new SelectList(db.Group, "Id", "Name");
+            ViewBag.City = db.City.ToList();
+            ViewBag.Group = db.Group.ToList();
             return View();
         }
 
@@ -126,110 +126,124 @@ namespace MarketOnline.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,Price,Adress,PhoneContact,image,IDUser,IDGroup,IDCity")] Items items)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,Price,Adress,PhoneContact,image,IDUser,idGroup,idCity")] Items items, IEnumerable<HttpPostedFileBase> files)
         {
             if (ModelState.IsValid)
             {
+                items.IDUser = User.Identity.GetUserId();
                 db.Items.Add(items);
                 db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                Items item = db.Items.ToList().Last();
+                ImagesItem test = new ImagesItem();
+                foreach (HttpPostedFileBase file in files)
+                {
+                    if (file != null)
+                    {
+                        
+                        test.Items = item;
+                        test.Image = new byte[file.ContentLength];
+                        file.InputStream.Read(test.Image, 0, file.ContentLength);
+                        db.ImagesItem.Add(test);
+                        db.SaveChanges();
+                    }
+                }
+               
 
-            ViewBag.IDUser = new SelectList(db.AspNetUsers, "Id", "Email", items.IDUser);
-            ViewBag.IDCity = new SelectList(db.City, "Id", "Name", items.IDCity);
-            ViewBag.IDGroup = new SelectList(db.Group, "Id", "Name", items.IDGroup);
-            return View(items);
-        }
-
-        [Authorize]
-        // GET: Items/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            //Check id is null
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            Items items = db.Items.Find(id);
-            //check is exist items
-            if (items == null)
-            {
-                return HttpNotFound();
-            }
-            //check is user have permission to edit
-            if (User.Identity.GetUserId().CompareTo(items.AspNetUsers.Id) != 0)
-            {
-                return PartialView("~/Views/Shared/WrongIdEditor.cshtml");
-            }
-
-            ViewBag.IDUser = new SelectList(db.AspNetUsers, "Id", "Email", items.IDUser);
-            ViewBag.IDCity = new SelectList(db.City, "Id", "Name", items.IDCity);
-            ViewBag.IDGroup = new SelectList(db.Group, "Id", "Name", items.IDGroup);
-            return View(items);
-        }
-
-        // POST: Items/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,Price,Adress,PhoneContact,image,IDUser,IDGroup,IDCity")] Items items)
-        {
-            if (items == null)
-            {
-                return HttpNotFound();
-            }
-            if (User.Identity.GetUserId().CompareTo(items.AspNetUsers.Id) != 0)
-            {
-                return PartialView("~/Views/Shared/WrongIdEditor.cshtml");
-            }
-            if (ModelState.IsValid)
-            {
-                db.Entry(items).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.IDUser = new SelectList(db.AspNetUsers, "Id", "Email", items.IDUser);
-            ViewBag.IDCity = new SelectList(db.City, "Id", "Name", items.IDCity);
-            ViewBag.IDGroup = new SelectList(db.Group, "Id", "Name", items.IDGroup);
-            return View(items);
-        }
-
-        // GET: Items/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Items items = db.Items.Find(id);
-            if (items == null)
-            {
-                return HttpNotFound();
-            }
-            return View(items);
-        }
-
-        // POST: Items/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Items items = db.Items.Find(id);
-            db.Items.Remove(items);
-            db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
+    
+
+    [Authorize]
+    // GET: Items/Edit/5
+    public ActionResult Edit(int? id)
+    {
+        //Check id is null
+        if (id == null)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
+
+        Items items = db.Items.Find(id);
+        //check is exist items
+        if (items == null)
+        {
+            return HttpNotFound();
+        }
+        //check is user have permission to edit
+        if (User.Identity.GetUserId().CompareTo(items.AspNetUsers.Id) != 0)
+        {
+            return PartialView("~/Views/Shared/WrongIdEditor.cshtml");
+        }
+
+        ViewBag.IDUser = new SelectList(db.AspNetUsers, "Id", "Email", items.IDUser);
+        ViewBag.IDCity = new SelectList(db.City, "Id", "Name", items.IDCity);
+        ViewBag.IDGroup = new SelectList(db.Group, "Id", "Name", items.IDGroup);
+        return View(items);
     }
+
+    // POST: Items/Edit/5
+    // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+    // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [Authorize]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult Edit([Bind(Include = "Id,Name,Description,Price,Adress,PhoneContact,image,IDUser,IDGroup,IDCity")] Items items)
+    {
+        if (items == null)
+        {
+            return HttpNotFound();
+        }
+        if (User.Identity.GetUserId().CompareTo(items.AspNetUsers.Id) != 0)
+        {
+            return PartialView("~/Views/Shared/WrongIdEditor.cshtml");
+        }
+        if (ModelState.IsValid)
+        {
+            db.Entry(items).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        ViewBag.IDUser = new SelectList(db.AspNetUsers, "Id", "Email", items.IDUser);
+        ViewBag.IDCity = new SelectList(db.City, "Id", "Name", items.IDCity);
+        ViewBag.IDGroup = new SelectList(db.Group, "Id", "Name", items.IDGroup);
+        return View(items);
+    }
+
+    // GET: Items/Delete/5
+    public ActionResult Delete(int? id)
+    {
+        if (id == null)
+        {
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+        Items items = db.Items.Find(id);
+        if (items == null)
+        {
+            return HttpNotFound();
+        }
+        return View(items);
+    }
+
+    // POST: Items/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public ActionResult DeleteConfirmed(int id)
+    {
+        Items items = db.Items.Find(id);
+        db.Items.Remove(items);
+        db.SaveChanges();
+        return RedirectToAction("Index");
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            db.Dispose();
+        }
+        base.Dispose(disposing);
+    }
+}
 }

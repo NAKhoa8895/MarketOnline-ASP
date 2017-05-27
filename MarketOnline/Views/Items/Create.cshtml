@@ -5,107 +5,321 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+@Styles.Render("~/Content/CreateItem.css")
+<script type="text/javascript">
+    // Activate Next Step
+
+    $(document).ready(function () {
+
+        var navListItems = $('ul.setup-panel li a'),
+            allWells = $('.setup-content');
+
+        allWells.hide();
+
+        navListItems.click(function (e) {
+            e.preventDefault();
+            var $target = $($(this).attr('href')),
+                $item = $(this).closest('li');
+
+            if (!$item.hasClass('disabled')) {
+                navListItems.closest('li').removeClass('active');
+                $item.addClass('active');
+                allWells.hide();
+                $target.show();
+            }
+        });
+
+        $('ul.setup-panel li.active a').trigger('click');
+
+        // DEMO ONLY //
+        $('#activate-step-2').on('click', function (e) {
+            $('ul.setup-panel li:eq(1)').removeClass('disabled');
+            $('ul.setup-panel li a[href="#step-2"]').trigger('click');
+            $(this).remove();
+        })
+
+        $('#activate-step-3').on('click', function (e) {
+            $('ul.setup-panel li:eq(2)').removeClass('disabled');
+            $('ul.setup-panel li a[href="#step-3"]').trigger('click');
+            $(this).remove();
+        })
+
+        $('#activate-step-4').on('click', function (e) {
+            $('ul.setup-panel li:eq(3)').removeClass('disabled');
+            $('ul.setup-panel li a[href="#step-4"]').trigger('click');
+            $(this).remove();
+        })
+
+        $('#activate-step-3').on('click', function (e) {
+            $('ul.setup-panel li:eq(2)').removeClass('disabled');
+            $('ul.setup-panel li a[href="#step-3"]').trigger('click');
+            $(this).remove();
+        })
+    });
 
 
-@using (Html.BeginForm()) 
+
+
+
+</script>
+
+<div class="container">
+    <div class="row form-group">
+        <div class="col-xs-12">
+            <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                <li class="active">
+                    <a href="#step-1">
+                        <h4 class="list-group-item-heading">Bước 1</h4>
+                        <p class="list-group-item-text">Chọn Loại mặt hàng</p>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a href="#step-2">
+                        <h4 class="list-group-item-heading">Step 2</h4>
+                        <p class="list-group-item-text">Chọn Khu Vực</p>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a href="#step-3">
+                        <h4 class="list-group-item-heading">Step 3</h4>
+                        <p class="list-group-item-text">Third step description</p>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a href="#step-4">
+                        <h4 class="list-group-item-heading">Step 4</h4>
+                        <p class="list-group-item-text">Second step description</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    function changeIdGroup(id) {
+        document.getElementById('idGroup').value = id;
+    }
+    function changeIdCity(id) {
+        document.getElementById('idCity').value = id;
+    }
+    $('#submit').click(function () {
+        $('#CreateItem').submit();
+    });
+
+</script>
+
+@using (Html.BeginForm("Create", "Items", FormMethod.Post, new { id = "CreateItem", enctype = "multipart/form-data" }))
 {
+    <input type="hidden" style="height:0px;width:0px" name="idGroup" id="idGroup" value="1">
+    <input type="hidden" style="height:0px;width:0px" name="idCity" id="idCity" value="1">
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Items</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Id, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Id, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    <div class="container">
+        <div class="row setup-content" id="step-1">
+            <div class="col-xs-12">
+                <div class="col-md-12 well text-center">
+                    <h3> Chọn Loại Mặt hàng </h3>
+                    <div style="width:90%;padding-left:20%">
+                        <!-- <form> -->
+                        @{
+                            var Groups = (List<MarketOnline.Models.Group>)ViewBag.Group;
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        }
+                        @foreach (var item in Groups)
+                        {
+                            var src = "~/img/group/" + item.Image;
+                            var id = item.Id;
+                            <a onclick="changeIdGroup(@id)" class="group" style="">
+                                <div class="row ">
+                                    <div class="col-sm-1">
+                                        <img src="@Url.Content(@src)" style="width:30px;height:30px;" />
+                                    </div>
+                                    <p class="col-sm-11" style="margin-top:4px;">
+                                        @Html.Raw(item.Name)
+                                    </p>
+                                </div>
+                            </a>
+                        }
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <!-- </form> -->
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Adress, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Adress, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Adress, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PhoneContact, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PhoneContact, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PhoneContact, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.image, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.image, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.image, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IDUser, "IDUser", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("IDUser", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.IDUser, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IDGroup, "IDGroup", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("IDGroup", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.IDGroup, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IDCity, "IDCity", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("IDCity", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.IDCity, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                    <button id="activate-step-2" class="btn btn-primary btn-md" style="margin-top:10px">Activate Step 2</button>
+                </div>
             </div>
         </div>
     </div>
-}
+    <div class="container">
+        <div class="row setup-content" id="step-2">
+            <div class="col-xs-12">
+                <div class="col-md-12 well text-center">
+                    <h1 class="text-center"> STEP 2</h1>
+                    <div style="width:90%;padding-left:20%">
+                        <!--<form></form> -->
+                        @{
+                            var City = (List<MarketOnline.Models.City>)ViewBag.City;
+
+                        }
+                        @foreach (var item in City)
+                        {
+                            var id = item.Id;
+                            <a onclick="changeIdCity(@id)" class="group" style="">
+                                <div class="row ">
+                                    <p class="col-lg-12" style="margin-top:4px;">
+                                        @Html.Raw(item.Name)
+                                    </p>
+                                </div>
+                            </a>
+                        }
+                        <!--<form></form> -->
+                    </div>
+                    <button id="activate-step-3" class="btn btn-primary btn-md" style="margin-top:10px">Activate Step 3</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+
+        <div class="row setup-content" id="step-3">
+            <div class="col-xs-12">
+                <div class="col-md-12 well text-center">
+                    <h1 class="text-center"> STEP 3</h1>
+
+                    <div style="width:90%;padding-left:20%">
+
+                        <div class="form-group ">
+                            <label for="text" style="text-align:left;">Tiêu Đề:</label>
+                            <input type="text" class="form-control " id="Name" placeholder="Nhập vào đây Tiêu đề sản phẩm của bạn " name="Name">
+                        </div>
+
+                        <div class="form-group ">
+                            <label for="text" style="text-align:left">Giá cả:</label>
+                            <input type="text" class="form-control" id="Price" placeholder="Nhập vào đây giá của sản phẩm" name="Price">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="text" style="text-align:left">Địa chỉ:</label>
+                            <input type="text" class="form-control" id="Adress" placeholder="Nhập vào đây địa chỉ liên lạc" name="Adress">
+                        </div>
+                        <div class="form-group">
+                            <label for="text" style="text-align:left">Miêu tả</label>
+                            <textarea rows="5" type="email" class="form-control" id="Description" placeholder="Nhập miêu tả của sản phẩm" name="Description"></textarea>
+                        </div>
+
+                    </div>
+
+                    <button id="activate-step-4" class="btn btn-primary btn-md">Activate Step 4</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        function readURL(input, klass, label, bdimg) {
+            $(bdimg).show();
+            $(label).hide();
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $(klass).attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function changeimg(file)
+        {
+            $(file).click();
+        }
+        function clearFile(name, img, file)
+        {
+           
+            console.log("afsdfg");
+            $(name).val("");
+            $(file).show();
+            $(img).hide();
+        }
+        function test() {
+            console.log("afsdfg");
+        }
+    </script>
+    <div class="container">
+
+        <div class="row setup-content" id="step-4">
+            <div class="col-xs-12">
+                <div class="col-md-12 well text-center">
+                    <h1 class="text-center"> Bước 4</h1>
+                    <h5>Chọn hình ảnh của sản phẩm</h5>
+                    <div class="row" style="padding-left:15%;padding-top:30px;">
+
+                        <label class="glyphicon glyphicon-camera btn-file" id="label1">
+                            <i>+</i>
+                            <input type="file" id="file1" onchange="readURL(this, '#img1', '#label1', '#bdimg1')" style="display: none;" name="files" accept="image/*" />
+                        </label>
+                        <div class="image" id="bdimg1" style="display:none" >
+                            <img id="img1" src="#" alt="your image" onclick="changeimg('#label1')" />
+                            <div class="cancel" onclick="clearFile('#file1', '#bdimg1', '#label1')">X</div>
+                        </div>
+
+                        <label class="glyphicon glyphicon-camera btn-file" id="label2">
+                            <i>+</i>
+                            <input type="file" id="file2" onchange="readURL(this, '#img2', '#label2', '#bdimg2')" style="display: none;" name="files" accept="image/*" />
+                        </label>
+                        <div class="image" id="bdimg2" style="display:none">
+                            <img id="img2" src="#" alt="your image" />
+                            <div class="cancel" onclick="clearFile('#file2', '#bdimg2', '#label2')">X</div>
+                        </div>
+
+                        <label class="glyphicon glyphicon-camera btn-file" id="label3">
+                            <i>+</i>
+                            <input type="file" id="file3" onchange="readURL(this, '#img3', '#label3', '#bdimg3')" style="display: none;" name="files" accept="image/*" />
+                        </label>
+                        <div class="image" id="bdimg3" style="display:none">
+                            <img id="img3" src="#" alt="your image" />
+                            <div class="cancel" onclick="clearFile('#file3', '#bdimg3', '#label3')">X</div>
+                        </div>
+
+                        <label class="glyphicon glyphicon-camera btn-file" id="label4">
+                            <i>+</i>
+                            <input type="file" id="file4" onchange="readURL(this, '#img4', '#label4', '#bdimg4')" style="display: none;" name="files" accept="image/*" />
+                        </label>
+                        <div class="image" id="bdimg4" style="display:none">
+                            <img id="img4" src="#" alt="your image" />
+                            <div class="cancel" onclick="clearFile('#file4', '#bdimg4', '#label4')">X</div>
+                        </div>
+
+                        <label class="glyphicon glyphicon-camera btn-file" id="label5">
+                            <i>+</i>
+                            <input type="file" id="file5" onchange="readURL(this, '#img5', '#label5', '#bdimg5')" style="display: none;" name="files" accept="image/*" />
+                        </label>
+                        <div class="image" id="bdimg5" style="display:none">
+                            <img id="img5" src="#" alt="your image" />
+                            <div class="cancel" onclick="clearFile('#file5', '#bdimg5', '#label5')">X</div>
+                        </div>
+
+
+                        <label class="glyphicon glyphicon-camera btn-file" id="label6">
+                            <i>+</i>
+                            <input type="file" id="file6" onchange="readURL(this, '#img6', '#label6', '#bdimg6')" style="display: none;" name="files" accept="image/*" />
+                        </label>
+                        <div class="image" id="bdimg6" style="display:none">
+                            <img id="img6" src="#" alt="your image" />
+                            <div class="cancel" onclick="clearFile('#file6', '#bdimg6', '#label6')">X</div>
+                        </div>
+                    </div>
+                    <button id="submit" class="btn btn-primary btn-lg" value="Submit" style="margin-top:30px">Đăng Tin</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+                            }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+
 </div>
 
 @section Scripts {

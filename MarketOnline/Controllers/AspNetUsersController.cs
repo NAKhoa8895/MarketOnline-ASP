@@ -124,26 +124,38 @@ namespace MarketOnline.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName,Name,Adress,DateOfBirth,Image")] AspNetUsers aspNetUsers, HttpPostedFileBase inputimage)
         {
-
-            if (ModelState.IsValid)
+            try
             {
-                if (inputimage != null)
+                if (ModelState.IsValid)
                 {
-                    aspNetUsers.Image = new byte[inputimage.ContentLength];
-                    inputimage.InputStream.Read(aspNetUsers.Image, 0, inputimage.ContentLength);
-                }
-                db.AspNetUsers.Attach(aspNetUsers);
-                db.Entry(aspNetUsers).Property(x => x.Email).IsModified = true;
-                db.Entry(aspNetUsers).Property(x => x.PhoneNumber).IsModified = true;
-                db.Entry(aspNetUsers).Property(x => x.UserName).IsModified = true;
-                db.Entry(aspNetUsers).Property(x => x.Name).IsModified = true;
-                db.Entry(aspNetUsers).Property(x => x.Adress).IsModified = true;
-                db.Entry(aspNetUsers).Property(x => x.DateOfBirth).IsModified = true;
-                db.Entry(aspNetUsers).Property(x => x.Image).IsModified = true;
-                db.SaveChanges();
+                    if (inputimage != null)
+                    {
+                        aspNetUsers.Image = new byte[inputimage.ContentLength];
+                        inputimage.InputStream.Read(aspNetUsers.Image, 0, inputimage.ContentLength);
+                    }
+                    db.AspNetUsers.Attach(aspNetUsers);
+                    db.Entry(aspNetUsers).Property(x => x.Email).IsModified = true;
+                    db.Entry(aspNetUsers).Property(x => x.PhoneNumber).IsModified = true;
+                    db.Entry(aspNetUsers).Property(x => x.UserName).IsModified = true;
+                    db.Entry(aspNetUsers).Property(x => x.Name).IsModified = true;
+                    db.Entry(aspNetUsers).Property(x => x.Adress).IsModified = true;
+                    db.Entry(aspNetUsers).Property(x => x.DateOfBirth).IsModified = true;
+                    db.Entry(aspNetUsers).Property(x => x.Image).IsModified = true;
+                    db.SaveChanges();
 
-                
-                return RedirectToAction("Index");
+
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in entityValidationErrors.ValidationErrors)
+                    {
+                        Response.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                    }
+                }
             }
             return View(aspNetUsers);
         }

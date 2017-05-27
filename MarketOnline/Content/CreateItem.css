@@ -1,0 +1,148 @@
+﻿.row > [class*='col-'] {
+    display: flex;
+    flex-direction: row;
+}
+
+.group {
+    height: 52px;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-top-color: rgb(221, 221, 221);
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-right-color: rgb(221, 221, 221);
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-bottom-color: rgb(221, 221, 221);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-left-color: rgb(221, 221, 221);
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    cursor: pointer;
+    text-decoration: none;
+    color: #555;
+}
+
+    .group:hover {
+        text-decoration: none;
+    }
+
+
+label {
+    display: block;
+    text-align: left;
+}
+
+input, select, textarea {
+    max-width: 999px;
+}
+
+.image-upload > input {
+    display: none;
+}
+.nav > li > a:hover, .nav > li > a:focus {
+    font-family: Verdana,Arial,sans-serif;
+    background-color:  #e6eeff;
+    text-decoration: none;
+}
+
+
+.image-upload span {
+    cursor: pointer;
+    padding-left: 26px;
+    padding-top: 20px;
+    font-size: 65px;
+    width: 120px;
+    height: 120px;
+    color: #fe9900;
+    border: 1px solid transparent;
+    background-color: #fff;
+    border-color: #fe9900;
+}
+
+i {
+    position: absolute;
+    right: 4px;
+    top: 2px;
+    font-style: italic;
+    font-size: 14px;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    padding-left: 26px;
+    padding-top: 20px;
+    font-size: 65px;
+    width: 120px;
+    height: 120px;
+    color: #fe9900;
+    border: 1px solid transparent;
+    background-color: #fff;
+    border-color: #fe9900;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+
+.image {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    width: 140px;
+    height: 140px;
+    color: #fe9900;
+    background-color: #fff;
+}
+
+    .image img {
+        margin-top:6px;
+        border-radius: 4px;
+        margin-left: 5px;
+        margin-right: 5px;
+        border: 1px solid #ddd;
+        width: 119px;
+        height: 119px;
+        object-fit: contain;
+    }
+
+.cancel {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 14px;
+    font-weight: 900;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    background-color: #000;
+    border-color: #bfbfbf;
+}

@@ -90,7 +90,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Image" Type="varbinary(max)" />
           <Property Name="IdItem" Type="int" Nullable="false" />
         </EntityType>
@@ -103,7 +103,7 @@
           <Property Name="Description" Type="ntext" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="Adress" Type="nvarchar" MaxLength="500" />
-          <Property Name="PhoneContact" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PhoneContact" Type="nvarchar" MaxLength="50" />
           <Property Name="image" Type="text" />
           <Property Name="IDUser" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="IDGroup" Type="int" Nullable="false" />
@@ -171,6 +171,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ImagesItem_ToItems">
+          <End Role="Items" Type="Self.Items" Multiplicity="1" />
+          <End Role="ImagesItem" Type="Self.ImagesItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Items">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ImagesItem">
+              <PropertyRef Name="IdItem" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Items_ToCity">
           <End Role="City" Type="Self.City" Multiplicity="1" />
           <End Role="Items" Type="Self.Items" Multiplicity="*" />
@@ -207,18 +219,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Table_ToItems">
-          <End Role="Items" Type="Self.Items" Multiplicity="1" />
-          <End Role="ImagesItem" Type="Self.ImagesItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Items">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ImagesItem">
-              <PropertyRef Name="IdItem" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
@@ -247,6 +247,10 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
+          <AssociationSet Name="FK_ImagesItem_ToItems" Association="Self.FK_ImagesItem_ToItems">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="ImagesItem" EntitySet="ImagesItem" />
+          </AssociationSet>
           <AssociationSet Name="FK_Items_ToCity" Association="Self.FK_Items_ToCity">
             <End Role="City" EntitySet="City" />
             <End Role="Items" EntitySet="Items" />
@@ -258,10 +262,6 @@
           <AssociationSet Name="FK_Items_ToUser" Association="Self.FK_Items_ToUser">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Items" EntitySet="Items" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Table_ToItems" Association="Self.FK_Table_ToItems">
-            <End Role="Items" EntitySet="Items" />
-            <End Role="ImagesItem" EntitySet="ImagesItem" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -359,7 +359,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="Adress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneContact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhoneContact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IDUser" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IDGroup" Type="Int32" Nullable="false" />

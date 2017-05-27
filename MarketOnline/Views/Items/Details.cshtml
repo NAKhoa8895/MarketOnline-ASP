@@ -74,7 +74,7 @@
 <style>
 
 </style>
-<div style="padding-left:3%;width:87%">
+<div style="padding-left:8%;width:87%">
     <div class="main">
         <div class="row">
             <div class="col-lg-8 ">
@@ -83,32 +83,21 @@
                         <!-- Loading Screen -->
                         <div data-u="loading" style="position:absolute;top:0px;left:0px;background:url('../../img/slider/loading.gif') no-repeat 50% 50%;background-color:rgba(0, 0, 0, 0.7);"></div>
                         <div data-u="slides" style="cursor:default;position:relative;top:0px;left:240px;width:720px;height:480px;overflow:hidden;">
-                          
-                            <div>
-                                <img data-u="image" src="https://static.chotot.com.vn/wm_images/06/0678951843.jpg" style="object-fit: cover;" />
-                                <img data-u="thumb" src="https://static.chotot.com.vn/wm_images/06/0678951843.jpg" style="object-fit:cover;" />
-                            </div>
-                            <div>
-                                <img data-u="image" src="https://static.chotot.com.vn/wm_images/03/0319741595.jpg" style="object-fit: cover;" />
-                                <img data-u="thumb" src="https://static.chotot.com.vn/wm_images/03/0319741595.jpg" style="object-fit: cover;" />
-                            </div>
-                            <div>
-                                <img data-u="image" src="../../img/slider/03.jpg" />
-                                <img data-u="thumb" src="../../img/slider/thumb-03.jpg" />
-                            </div>
-                            <div>
-                                <img data-u="image" src="../../img/slider/04.jpg" />
-                                <img data-u="thumb" src="../../img/slider/thumb-04.jpg" />
-                            </div>
-                            <div>
-                                <img data-u="image" src="../../img/slider/05.jpg" />
-                                <img data-u="thumb" src="../../img/slider/thumb-05.jpg" />
-                            </div>
-                            <div>
-                                <img data-u="image" src="../../img/slider/06.jpg" />
-                                <img data-u="thumb" src="../../img/slider/thumb-06.jpg" />
-                            </div>
 
+                            @foreach (MarketOnline.Models.ImagesItem image in Model.ImagesItem)
+                            {
+                                var imgSrc = "";
+                                if (image != null)
+                                {
+                                    var base64 = Convert.ToBase64String(image.Image);
+                                    imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                }
+                                <div>
+                                    <img data-u="image" src="@imgSrc" style="object-fit: cover;" />
+                                    <img data-u="thumb"  src="@imgSrc" style="object-fit:cover;" />
+                                </div>
+
+                            }
 
                             <a data-u="any" href="https://www.jssor.com" style="display:none">slider bootstrap</a>
                         </div>
@@ -183,10 +172,10 @@
                                 <div id="hide" type="button" class="btn btn-success  btncustom" style="width:97%;height:44px;">
                                     <p style="margin:auto">
                                         <span class="glyphicon glyphicon-phone" style="font-size:25px;"></span>
-                                        
-                                            <span class="text-button-details "style="vertical-align:super">
-                                                Nhấn để hiện số
-                                            </span>
+
+                                        <span class="text-button-details " style="vertical-align:super">
+                                            Nhấn để hiện số
+                                        </span>
                                     </p>
                                 </div>
                                 <h4>

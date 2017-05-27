@@ -72,10 +72,12 @@
                     <div class="container">
                         @using (Html.BeginForm("Index", "Items", FormMethod.Post))
                         {
-                            <div style="padding-top:20%;padding-left:35%;opacity:0.8">
-                                @Html.DropDownList("City", list, "All", new { @class = "form-control"  })
+                            <div style="padding-top:25%;padding-left:35%;opacity:0.8">
+                                <div class="row">
+                                    @Html.DropDownList("City", list, "All", new { @class = "form-control" })
 
-                                <input class="btn-success" type="submit" value="Find" />
+                                    <input class="btn btn-success" type="submit" value="Find" />
+                                </div>
                             </div>
                         }
                     </div>

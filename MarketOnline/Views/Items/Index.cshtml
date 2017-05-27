@@ -67,11 +67,18 @@
         <div class="containitem">
             @foreach (var item in Model)
             {
-
                 <div class="row item1">
                     <a href="@Url.Action("Details", "Items",new { id=item.Id})" class="" style="text-decoration:none">
+                        @{
+                            var imgSrc = "";
+                            if (item.ImagesItem.First() != null)
+                            {
+                                var base64 = Convert.ToBase64String(item.ImagesItem.First().Image);
+                                imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                            }
+                        }
                         <div class="col-sm-3">
-                            <img src="https://fscl01.fonpit.de/userfiles/6626797/image/ram-1-w628.jpg" class="imgitems" />
+                            <img src="@imgSrc" class="imgitems" />
                         </div>
                     </a>
                     <div class="col-sm-7" style="padding-left:0px">
